@@ -1,0 +1,5 @@
+extends:
+  - recommended
+rules:
+  # /health and /v1/models are public, unauthenticated and never return 4xx.
+  operation-4xx-response: off

@@ -1,0 +1,28 @@
+# PyPI with Trusted Publishing. Tags: python-v0.1.0 -> python/, langchain-v0.1.0 -> integrations/langchain/,
+# llamaindex-v0.1.0 -> integrations/llamaindex/. One pending publisher per project on pypi.org
+# (repo PunkyTigerLabs/superion-s1, workflow publish-python.yml, environment pypi).
+name: Publish Python
+on:
+  push:
+    tags: ["python-v*", "langchain-v*", "llamaindex-v*"]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - id: dir
+        run: |
+          case "$GITHUB_REF_NAME" in
+            python-v*) echo "path=python" >> "$GITHUB_OUTPUT" ;;
+            langchain-v*) echo "path=integrations/langchain" >> "$GITHUB_OUTPUT" ;;
+            llamaindex-v*) echo "path=integrations/llamaindex" >> "$GITHUB_OUTPUT" ;;
+          esac
+      - run: pip install build && python -m build ${{ steps.dir.outputs.path }} --outdir dist
+      - uses: pypa/gh-action-pypi-publish@release/v1

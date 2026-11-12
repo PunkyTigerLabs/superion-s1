@@ -1,0 +1,25 @@
+# npm with provenance on tag js-v0.1.0. Needs npm org "punkytigerlabs" and a Trusted Publisher
+# (repo PunkyTigerLabs/superion-s1, workflow publish-js.yml) or an NPM_TOKEN secret.
+name: Publish JS
+on:
+  push:
+    tags: ["js-v*"]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: js
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm ci && npm run build
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

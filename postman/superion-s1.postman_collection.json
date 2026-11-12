@@ -1,0 +1,1522 @@
+{
+  "item": [
+    {
+      "name": "Decisions",
+      "description": "Calibrated typed decisions over a text state.",
+      "item": [
+        {
+          "id": "2c2273f7-036d-4d33-b243-868848af6b77",
+          "name": "Support ticket — refund, sentiment, urgency",
+          "request": {
+            "name": "Support ticket — refund, sentiment, urgency",
+            "description": {
+              "content": "Billed input tokens = the state once + every question's instructions, criteria and\noption labels (Gemma 4 tokenizer). Failed requests (any 4xx/5xx) are not charged.\nLimits: each question (state + that question) ≤ 32,768 tokens; each request ≤ 65,536\nbillable input tokens; body ≤ 4 MB. Longer inputs are refused with 422, never truncated.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "systemone"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Message: The laptop arrived broken. I want my money back now, this is unacceptable.\",\n  \"questions\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Does the customer ask for a refund or a replacement?\",\n      \"criteria\": {\n        \"true\": \"yes\",\n        \"false\": \"no\"\n      }\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"instructions\": \"Overall sentiment of the message.\",\n      \"criteria\": {\n        \"pos\": \"positive\",\n        \"neg\": \"negative\",\n        \"neu\": \"neutral\"\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"instructions\": \"How urgent is a reply?\",\n      \"criteria\": [\n        \"not urgent\",\n        \"somewhat urgent\",\n        \"very urgent\"\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7fc7761f-7184-48a1-bd5a-93ce22db6015",
+              "name": "One answer per question.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "systemone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Message: The laptop arrived broken. I want my money back now, this is unacceptable.\",\n  \"questions\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Does the customer ask for a refund or a replacement?\",\n      \"criteria\": {\n        \"true\": \"yes\",\n        \"false\": \"no\"\n      }\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"instructions\": \"Overall sentiment of the message.\",\n      \"criteria\": {\n        \"pos\": \"positive\",\n        \"neg\": \"negative\",\n        \"neu\": \"neutral\"\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"instructions\": \"How urgent is a reply?\",\n      \"criteria\": [\n        \"not urgent\",\n        \"somewhat urgent\",\n        \"very urgent\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Prepaid — requests per minute.",
+                    "type": "text/plain"
+                  },
+                  "key": "X-RateLimit-Limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Prepaid — requests remaining in the current window (burst bucket).",
+                    "type": "text/plain"
+                  },
+                  "key": "X-RateLimit-Remaining",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Prepaid — seconds until the request window refills.",
+                    "type": "text/plain"
+                  },
+                  "key": "X-RateLimit-Reset",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Prepaid — input tokens per minute.",
+                    "type": "text/plain"
+                  },
+                  "key": "X-RateLimit-Limit-Tokens",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Prepaid — input tokens remaining in the current window.",
+                    "type": "text/plain"
+                  },
+                  "key": "X-RateLimit-Remaining-Tokens",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Free — input tokens per UTC day.",
+                    "type": "text/plain"
+                  },
+                  "key": "X-RateLimit-Limit-Tokens-Day",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Free — input tokens remaining today.",
+                    "type": "text/plain"
+                  },
+                  "key": "X-RateLimit-Remaining-Tokens-Day",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Free — seconds until 00:00 UTC.",
+                    "type": "text/plain"
+                  },
+                  "key": "X-RateLimit-Reset-Day",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Prepaid — balance after this request.",
+                    "type": "text/plain"
+                  },
+                  "key": "X-S1-Balance-USD",
+                  "value": "<string>"
+                }
+              ],
+              "body": "{\n  \"model\": \"superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc\",\n  \"usage\": {\n    \"input_tokens\": 135,\n    \"output_tokens\": 0\n  },\n  \"answers\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"noul\": 0.9997\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"probabilities\": {\n        \"pos\": 0.0003,\n        \"neg\": 0.9943,\n        \"neu\": 0.0054\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"probabilities\": {\n        \"0\": 0.0,\n        \"1\": 0.1922,\n        \"2\": 0.8078\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "320efa30-5f79-4dfa-8dab-e89384fcc48b",
+              "name": "Invalid JSON, unknown model or malformed question.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "systemone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Message: The laptop arrived broken. I want my money back now, this is unacceptable.\",\n  \"questions\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Does the customer ask for a refund or a replacement?\",\n      \"criteria\": {\n        \"true\": \"yes\",\n        \"false\": \"no\"\n      }\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"instructions\": \"Overall sentiment of the message.\",\n      \"criteria\": {\n        \"pos\": \"positive\",\n        \"neg\": \"negative\",\n        \"neu\": \"neutral\"\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"instructions\": \"How urgent is a reply?\",\n      \"criteria\": [\n        \"not urgent\",\n        \"somewhat urgent\",\n        \"very urgent\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"unknown model\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ffe4542c-2469-4563-b362-6dd5e50ce2ae",
+              "name": "Missing, wrong, rotated or revoked key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "systemone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Message: The laptop arrived broken. I want my money back now, this is unacceptable.\",\n  \"questions\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Does the customer ask for a refund or a replacement?\",\n      \"criteria\": {\n        \"true\": \"yes\",\n        \"false\": \"no\"\n      }\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"instructions\": \"Overall sentiment of the message.\",\n      \"criteria\": {\n        \"pos\": \"positive\",\n        \"neg\": \"negative\",\n        \"neu\": \"neutral\"\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"instructions\": \"How urgent is a reply?\",\n      \"criteria\": [\n        \"not urgent\",\n        \"somewhat urgent\",\n        \"very urgent\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid API key\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "950e4f3d-9d5a-4a0e-a451-e6a3c357ffcc",
+              "name": "Prepaid balance is 0 or below — add credits.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "systemone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Message: The laptop arrived broken. I want my money back now, this is unacceptable.\",\n  \"questions\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Does the customer ask for a refund or a replacement?\",\n      \"criteria\": {\n        \"true\": \"yes\",\n        \"false\": \"no\"\n      }\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"instructions\": \"Overall sentiment of the message.\",\n      \"criteria\": {\n        \"pos\": \"positive\",\n        \"neg\": \"negative\",\n        \"neu\": \"neutral\"\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"instructions\": \"How urgent is a reply?\",\n      \"criteria\": [\n        \"not urgent\",\n        \"somewhat urgent\",\n        \"very urgent\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"insufficient balance: add credits at https://punkytigerlabs.com/s1/ (prepaid, 0.042 USD per million input tokens)\",\n  \"balance_usd\": -4e-06\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa51d27e-063b-43b1-82b5-9361bf240f64",
+              "name": "Body over 4 MB.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "systemone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Message: The laptop arrived broken. I want my money back now, this is unacceptable.\",\n  \"questions\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Does the customer ask for a refund or a replacement?\",\n      \"criteria\": {\n        \"true\": \"yes\",\n        \"false\": \"no\"\n      }\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"instructions\": \"Overall sentiment of the message.\",\n      \"criteria\": {\n        \"pos\": \"positive\",\n        \"neg\": \"negative\",\n        \"neu\": \"neutral\"\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"instructions\": \"How urgent is a reply?\",\n      \"criteria\": [\n        \"not urgent\",\n        \"somewhat urgent\",\n        \"very urgent\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"request too large\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f52cc404-a4ae-4c19-ba1d-dadced495990",
+              "name": "A question exceeds 32,768 tokens, the request exceeds 65,536 billable tokens, a choice has fewer than 2 or more than 255 options, or a score fewer than 2 or more than 16 levels.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "systemone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Message: The laptop arrived broken. I want my money back now, this is unacceptable.\",\n  \"questions\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Does the customer ask for a refund or a replacement?\",\n      \"criteria\": {\n        \"true\": \"yes\",\n        \"false\": \"no\"\n      }\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"instructions\": \"Overall sentiment of the message.\",\n      \"criteria\": {\n        \"pos\": \"positive\",\n        \"neg\": \"negative\",\n        \"neu\": \"neutral\"\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"instructions\": \"How urgent is a reply?\",\n      \"criteria\": [\n        \"not urgent\",\n        \"somewhat urgent\",\n        \"very urgent\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"question s: score supports 2..16 levels\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a5fb04d-b496-4390-9a2a-ddc19ed8f00a",
+              "name": "Daily or monthly quota used up, Prepaid per-minute limit, or fair queue full. Wait `Retry-After`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "systemone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Message: The laptop arrived broken. I want my money back now, this is unacceptable.\",\n  \"questions\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Does the customer ask for a refund or a replacement?\",\n      \"criteria\": {\n        \"true\": \"yes\",\n        \"false\": \"no\"\n      }\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"instructions\": \"Overall sentiment of the message.\",\n      \"criteria\": {\n        \"pos\": \"positive\",\n        \"neg\": \"negative\",\n        \"neu\": \"neutral\"\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"instructions\": \"How urgent is a reply?\",\n      \"criteria\": [\n        \"not urgent\",\n        \"somewhat urgent\",\n        \"very urgent\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Seconds to wait before retrying.",
+                    "type": "text/plain"
+                  },
+                  "key": "Retry-After",
+                  "value": "<integer>"
+                }
+              ],
+              "body": "{\n  \"error\": \"server busy: queue full, retry shortly\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e1b21d3-63d2-4465-9df4-68df17beaa08",
+              "name": "Service temporarily unavailable. Wait `Retry-After` and retry.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "systemone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Message: The laptop arrived broken. I want my money back now, this is unacceptable.\",\n  \"questions\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Does the customer ask for a refund or a replacement?\",\n      \"criteria\": {\n        \"true\": \"yes\",\n        \"false\": \"no\"\n      }\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"instructions\": \"Overall sentiment of the message.\",\n      \"criteria\": {\n        \"pos\": \"positive\",\n        \"neg\": \"negative\",\n        \"neu\": \"neutral\"\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"instructions\": \"How urgent is a reply?\",\n      \"criteria\": [\n        \"not urgent\",\n        \"somewhat urgent\",\n        \"very urgent\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Seconds to wait before retrying.",
+                    "type": "text/plain"
+                  },
+                  "key": "Retry-After",
+                  "value": "<integer>"
+                }
+              ],
+              "body": "{\n  \"error\": \"service temporarily unavailable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"one answer per question\", () => {",
+                  "  const asked = Object.keys(JSON.parse(pm.request.body.raw).questions).sort();",
+                  "  pm.expect(Object.keys(body.answers).sort()).to.eql(asked);",
+                  "});",
+                  "pm.test(\"probabilities in [0,1]\", () => {",
+                  "  for (const a of Object.values(body.answers)) {",
+                  "    const ps = a.type === \"noul\" ? [a.noul] : Object.values(a.probabilities);",
+                  "    ps.forEach(p => pm.expect(p).to.be.within(0, 1));",
+                  "  }",
+                  "});",
+                  "pm.test(\"output tokens are free\", () => pm.expect(body.usage.output_tokens).to.eql(0));"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2c2273f7-036d-4d33-b243-868848af6b77",
+          "name": "Moderation — threat and category",
+          "request": {
+            "name": "Moderation — threat and category",
+            "description": {
+              "content": "Billed input tokens = the state once + every question's instructions, criteria and\noption labels (Gemma 4 tokenizer). Failed requests (any 4xx/5xx) are not charged.\nLimits: each question (state + that question) ≤ 32,768 tokens; each request ≤ 65,536\nbillable input tokens; body ≤ 4 MB. Longer inputs are refused with 422, never truncated.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "systemone"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Comment: You are all idiots and I know where you live.\",\n  \"questions\": {\n    \"threat\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Does the comment contain a threat of violence or intimidation?\",\n      \"criteria\": {\n        \"true\": \"contains a threat\",\n        \"false\": \"no threat\"\n      }\n    },\n    \"category\": {\n      \"type\": \"choice\",\n      \"instructions\": \"Main moderation category of the comment.\",\n      \"criteria\": {\n        \"ok\": \"acceptable\",\n        \"insult\": \"insult or harassment\",\n        \"threat\": \"threat\",\n        \"spam\": \"spam\"\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"one answer per question\", () => {",
+                  "  const asked = Object.keys(JSON.parse(pm.request.body.raw).questions).sort();",
+                  "  pm.expect(Object.keys(body.answers).sort()).to.eql(asked);",
+                  "});",
+                  "pm.test(\"probabilities in [0,1]\", () => {",
+                  "  for (const a of Object.values(body.answers)) {",
+                  "    const ps = a.type === \"noul\" ? [a.noul] : Object.values(a.probabilities);",
+                  "    ps.forEach(p => pm.expect(p).to.be.within(0, 1));",
+                  "  }",
+                  "});",
+                  "pm.test(\"output tokens are free\", () => pm.expect(body.usage.output_tokens).to.eql(0));"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2c2273f7-036d-4d33-b243-868848af6b77",
+          "name": "Lead scoring — fit and intent",
+          "request": {
+            "name": "Lead scoring — fit and intent",
+            "description": {
+              "content": "Billed input tokens = the state once + every question's instructions, criteria and\noption labels (Gemma 4 tokenizer). Failed requests (any 4xx/5xx) are not charged.\nLimits: each question (state + that question) ≤ 32,768 tokens; each request ≤ 65,536\nbillable input tokens; body ≤ 4 MB. Longer inputs are refused with 422, never truncated.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "systemone"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"Inbound form: 'We are a 200-person logistics company. We need to classify ~2M support emails per month and want pricing for a dedicated key before end of quarter.' Job title: Head of Operations.\",\n  \"questions\": {\n    \"buying_intent\": {\n      \"type\": \"score\",\n      \"instructions\": \"How strong is the buying intent?\",\n      \"criteria\": [\n        \"none\",\n        \"low\",\n        \"medium\",\n        \"high\"\n      ]\n    },\n    \"decision_maker\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Is the sender likely a decision maker for this purchase?\",\n      \"criteria\": {\n        \"true\": \"likely decision maker\",\n        \"false\": \"not a decision maker\"\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"one answer per question\", () => {",
+                  "  const asked = Object.keys(JSON.parse(pm.request.body.raw).questions).sort();",
+                  "  pm.expect(Object.keys(body.answers).sort()).to.eql(asked);",
+                  "});",
+                  "pm.test(\"probabilities in [0,1]\", () => {",
+                  "  for (const a of Object.values(body.answers)) {",
+                  "    const ps = a.type === \"noul\" ? [a.noul] : Object.values(a.probabilities);",
+                  "    ps.forEach(p => pm.expect(p).to.be.within(0, 1));",
+                  "  }",
+                  "});",
+                  "pm.test(\"output tokens are free\", () => pm.expect(body.usage.output_tokens).to.eql(0));"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2c2273f7-036d-4d33-b243-868848af6b77",
+          "name": "Agent guardrail — should this tool call run?",
+          "request": {
+            "name": "Agent guardrail — should this tool call run?",
+            "description": {
+              "content": "Billed input tokens = the state once + every question's instructions, criteria and\noption labels (Gemma 4 tokenizer). Failed requests (any 4xx/5xx) are not charged.\nLimits: each question (state + that question) ≤ 32,768 tokens; each request ≤ 65,536\nbillable input tokens; body ≤ 4 MB. Longer inputs are refused with 422, never truncated.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "systemone"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"{{model}}\",\n  \"state\": \"User request: 'clean up the repo'. Proposed tool call: shell(\\\"rm -rf / --no-preserve-root\\\").\",\n  \"questions\": {\n    \"allow\": {\n      \"type\": \"noul\",\n      \"instructions\": \"Is it safe to execute this tool call without asking the user?\",\n      \"criteria\": {\n        \"true\": \"safe to run\",\n        \"false\": \"must not run without confirmation\"\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"one answer per question\", () => {",
+                  "  const asked = Object.keys(JSON.parse(pm.request.body.raw).questions).sort();",
+                  "  pm.expect(Object.keys(body.answers).sort()).to.eql(asked);",
+                  "});",
+                  "pm.test(\"probabilities in [0,1]\", () => {",
+                  "  for (const a of Object.values(body.answers)) {",
+                  "    const ps = a.type === \"noul\" ? [a.noul] : Object.values(a.probabilities);",
+                  "    ps.forEach(p => pm.expect(p).to.be.within(0, 1));",
+                  "  }",
+                  "});",
+                  "pm.test(\"output tokens are free\", () => pm.expect(body.usage.output_tokens).to.eql(0));"
+                ]
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Models",
+      "description": "Served model versions (immutable IDs).",
+      "item": [
+        {
+          "id": "4375ae1c-aecb-45b3-af96-6eb06f6575c1",
+          "name": "List served models",
+          "request": {
+            "name": "List served models",
+            "description": {
+              "content": "Public (no key needed). IDs are immutable; retirement comes with at least 90 days notice.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {},
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [
+            {
+              "id": "c95e6fa6-dded-4f9a-bc69-47dce8206a7c",
+              "name": "Served models.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc\",\n      \"name\": \"Punky Tiger Labs: Superion S1\",\n      \"is_ready\": true\n    },\n    {\n      \"id\": \"superion-s1-v5-int4e-vllm-kv1@sha256:47f7571c\",\n      \"name\": \"Punky Tiger Labs: Superion S1\",\n      \"is_ready\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Account",
+      "description": "Usage, balance and key management for the calling key.",
+      "item": [
+        {
+          "id": "4991d5bb-df4b-4b0e-9771-88abea2a7e0b",
+          "name": "Plan, today's counters, limits and (Prepaid) balance, history and purchases",
+          "request": {
+            "name": "Plan, today's counters, limits and (Prepaid) balance, history and purchases",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "usage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [
+            {
+              "id": "949103e6-7039-4180-bba2-f93e158c68df",
+              "name": "Usage of the calling key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_id\": \"key_example\",\n  \"plan\": \"prepaid\",\n  \"day_utc\": \"20261112\",\n  \"requests_today\": 1840,\n  \"tokens_today\": 412300,\n  \"limits\": {\n    \"requests_per_minute\": 1500,\n    \"tokens_per_minute\": 7500000,\n    \"requests_per_day\": null,\n    \"tokens_per_day\": null,\n    \"tokens_per_month\": null\n  },\n  \"balance_usd\": 19.982684,\n  \"price_usd_per_million_input_tokens\": 0.042,\n  \"output_tokens_price\": 0,\n  \"history\": [\n    {\n      \"day_utc\": \"20261112\",\n      \"requests\": 1840,\n      \"input_tokens\": 412300,\n      \"cost_usd\": 0.017316\n    }\n  ],\n  \"purchases\": [\n    {\n      \"t\": 1794931200,\n      \"usd\": 20.0,\n      \"ref\": \"cs_example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ccb146a-e953-4f2a-a0b3-190ece8bad60",
+              "name": "Missing, wrong, rotated or revoked key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid API key\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a2340467-1b3f-41ed-a24a-f21f1b05d09f",
+          "name": "Rotate the calling key",
+          "request": {
+            "name": "Rotate the calling key",
+            "description": {
+              "content": "Returns a new key; the old one stops working at once. Store the new key immediately — it is shown only here.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "keys",
+                "rotate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {}
+          },
+          "response": [
+            {
+              "id": "e31739dc-56c9-4901-98f9-667bdcc1b758",
+              "name": "New key issued.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "keys",
+                    "rotate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"api_key\": \"s1k_<new key, shown once>\",\n  \"key_id\": \"key_example\",\n  \"plan\": \"prepaid\",\n  \"old_key_valid_for_s\": 0\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ce4a116-0b69-4a2a-b339-6e42e19f351b",
+              "name": "Invalid JSON, unknown model or malformed question.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "keys",
+                    "rotate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"unknown model\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f1769fe-c97d-47cb-99f3-ef8665284d60",
+              "name": "Missing, wrong, rotated or revoked key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "keys",
+                    "rotate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid API key\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "373d5721-127a-422c-9a84-2003343550cb",
+          "name": "Revoke the calling key",
+          "request": {
+            "name": "Revoke the calling key",
+            "description": {
+              "content": "Disables the key permanently.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "keys",
+                "revoke"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {}
+          },
+          "response": [
+            {
+              "id": "20d9cf90-f76f-48c0-a1de-f7d3f3c6d968",
+              "name": "Key revoked.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "keys",
+                    "revoke"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_id\": \"key_example\",\n  \"revoked\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc7bb776-a74c-4935-891d-9bed9e65e196",
+              "name": "Invalid JSON, unknown model or malformed question.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "keys",
+                    "revoke"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"unknown model\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c36d3940-980d-453b-aec5-eb1067d825ea",
+              "name": "Missing, wrong, rotated or revoked key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "keys",
+                    "revoke"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid API key\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Service",
+      "description": "Health check.",
+      "item": [
+        {
+          "id": "44a55382-b751-42f4-8cb6-35a9c4f41a66",
+          "name": "Service health",
+          "request": {
+            "name": "Service health",
+            "description": {},
+            "url": {
+              "path": [
+                "health"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {},
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [
+            {
+              "id": "197b8946-d247-4274-b0b4-f96a89fb8563",
+              "name": "Service is up.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "health"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.punkytigerlabs.com"
+    },
+    {
+      "key": "model",
+      "value": "superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "description": "Your Superion S1 key (s1k_…). Never commit it."
+    }
+  ],
+  "info": {
+    "_postman_id": "cfa7458b-6c8c-47f3-a339-7f8929feaa4c",
+    "name": "Superion S1 API — Punky Tiger Labs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Calibrated decisions in one call: yes/no (`noul`), `choice` and `score` probabilities, no text generation, ~0.3 s p50.\n\n**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** — [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).\n\n1. Get a free key (100 M input tokens/day) at https://punkytigerlabs.com/s1/\n2. Set the collection variable `apiKey` (or a Postman environment) to your key `s1k_…`.\n3. Send *Support ticket*.\n\nPrepaid: 0.042 USD per million input tokens, output free. Docs: https://punkytigerlabs.com/s1/docs"
+  }
+}

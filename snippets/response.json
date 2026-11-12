@@ -1,0 +1,9 @@
+{
+  "model": "superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc",
+  "usage": {"input_tokens": 135, "output_tokens": 0},
+  "answers": {
+    "refund":    {"type": "noul",   "noul": 0.9997},
+    "sentiment": {"type": "choice", "probabilities": {"pos": 0.0003, "neg": 0.9943, "neu": 0.0054}},
+    "urgency":   {"type": "score",  "probabilities": {"0": 0.0000, "1": 0.1922, "2": 0.8078}}
+  }
+}

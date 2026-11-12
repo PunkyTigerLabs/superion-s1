@@ -1,0 +1,60 @@
+<!-- Draft for langchain-ai/docs (src/oss/python/integrations/tools/superion.mdx). -->
+---
+title: Superion S1
+---
+
+[Superion S1](https://punkytigerlabs.com/s1/) by Punky Tiger Labs is a calibrated decision API:
+it answers yes/no, choice and score questions about a text with calibrated probabilities in one
+call, without generating text. #1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88
+(Nov 2026), [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).
+
+## Overview
+
+| Class | Package | Serializable | JS support | Version |
+|---|---|---|---|---|
+| `SuperionDecisionTool` | `langchain-superion` | ❌ | ❌ | ![PyPI](https://img.shields.io/pypi/v/langchain-superion) |
+
+### Tool features
+Returns calibrated probabilities as JSON. Free plan: 100 M input tokens per day.
+
+## Setup
+
+```bash
+pip install -qU langchain-superion
+```
+
+```python
+import getpass, os
+if not os.environ.get("SUPERION_API_KEY"):
+    os.environ["SUPERION_API_KEY"] = getpass.getpass("Superion S1 key: ")
+```
+
+## Instantiation
+
+```python
+from langchain_superion import SuperionDecisionTool
+tool = SuperionDecisionTool()
+```
+
+## Invocation
+
+```python
+tool.invoke({"state": "Message: I want my money back.", "question": "Does the customer ask for a refund?"})
+```
+
+### Invoke with ToolCall
+
+```python
+tool.invoke({"args": {"state": "Ticket: charged twice", "question": "Which team?", "type": "choice",
+                      "options": ["billing", "tech", "sales"]}, "id": "1", "name": tool.name, "type": "tool_call"})
+```
+
+## Use within an agent
+
+```python
+from langchain.agents import create_agent
+agent = create_agent(model="openai:gpt-5-mini", tools=[tool])
+```
+
+## API reference
+https://punkytigerlabs.com/s1/docs

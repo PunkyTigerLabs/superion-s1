@@ -1,0 +1,99 @@
+# Superion S1 — Quickstart
+
+Calibrated decisions in one call: ask yes/no (`noul`), `choice` and `score` questions about any text and get
+one calibrated probability per question, without text generation (~0.3 s p50).
+
+**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** —
+[leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)
+
+1. Get a free key (100 M input tokens per day): https://punkytigerlabs.com/s1/
+2. Call the API:
+
+### curl
+
+```bash
+curl https://api.punkytigerlabs.com/v1/systemone \
+  -H "Authorization: Bearer $SUPERION_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc",
+    "state": "Message: The laptop arrived broken. I want my money back now, this is unacceptable.",
+    "questions": {
+      "refund":    {"type": "noul",   "instructions": "Does the customer ask for a refund or a replacement?", "criteria": {"true": "yes", "false": "no"}},
+      "sentiment": {"type": "choice", "instructions": "Overall sentiment of the message.", "criteria": {"pos": "positive", "neg": "negative", "neu": "neutral"}},
+      "urgency":   {"type": "score",  "instructions": "How urgent is a reply?", "criteria": ["not urgent", "somewhat urgent", "very urgent"]}
+    }
+  }'
+```
+
+### Python
+
+```bash
+pip install superion-s1
+```
+
+```python
+# Superion S1 quickstart (Python SDK). pip install superion-s1
+# Free key: https://punkytigerlabs.com/s1/  ->  export SUPERION_API_KEY=s1k_...
+from superion_s1 import Superion, noul, choice, score
+
+s1 = Superion()
+d = s1.decide(
+    "Message: The laptop arrived broken. I want my money back now, this is unacceptable.",
+    {
+        "refund": noul("Does the customer ask for a refund or a replacement?"),
+        "sentiment": choice("Overall sentiment of the message.", {"pos": "positive", "neg": "negative", "neu": "neutral"}),
+        "urgency": score("How urgent is a reply?", ["not urgent", "somewhat urgent", "very urgent"]),
+    },
+)
+print(d["refund"].p, d["sentiment"].best, d["urgency"].best_label)   # 0.9997 neg very urgent
+```
+
+### JavaScript / TypeScript
+
+```bash
+npm install @punkytigerlabs/superion-s1
+```
+
+```js
+// Superion S1 quickstart (Node.js / TypeScript). npm install @punkytigerlabs/superion-s1
+// Free key: https://punkytigerlabs.com/s1/  ->  export SUPERION_API_KEY=s1k_...
+import { Superion, noul, choice, score } from "@punkytigerlabs/superion-s1";
+
+const s1 = new Superion();
+const d = await s1.decide(
+  "Message: The laptop arrived broken. I want my money back now, this is unacceptable.",
+  {
+    refund: noul("Does the customer ask for a refund or a replacement?"),
+    sentiment: choice("Overall sentiment of the message.", { pos: "positive", neg: "negative", neu: "neutral" }),
+    urgency: score("How urgent is a reply?", ["not urgent", "somewhat urgent", "very urgent"]),
+  },
+);
+console.log(d.answers.refund.p, d.answers.sentiment.best, d.answers.urgency.bestLabel); // 0.9997 neg very urgent
+```
+
+### Response
+
+```json
+{
+  "model": "superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc",
+  "usage": {"input_tokens": 135, "output_tokens": 0},
+  "answers": {
+    "refund":    {"type": "noul",   "noul": 0.9997},
+    "sentiment": {"type": "choice", "probabilities": {"pos": 0.0003, "neg": 0.9943, "neu": 0.0054}},
+    "urgency":   {"type": "score",  "probabilities": {"0": 0.0000, "1": 0.1922, "2": 0.8078}}
+  }
+}
+```
+
+`noul` is the probability of `true`. `choice` and `score` give a probability per option / level
+(score levels are indexed in the order you list them, lowest first). Billed input tokens = the state once
++ every question; output is always 0 and free.
+
+**Pricing.** Free: 100 M input tokens/day per key, permanent · Prepaid: 0.042 USD per million input
+tokens, output free · Contract: dedicated key.
+Docs: https://punkytigerlabs.com/s1/docs · Built on Gemma 4 26B-A4B, INT4 experts.
+
+**Custom & industry models.** Punky Tiger Labs also builds custom and industry-specific decision models,
+fitted to your own taxonomy, labels and data, served on a dedicated instance. Contact:
+alvaro.lopez@punkytigerlabs.com

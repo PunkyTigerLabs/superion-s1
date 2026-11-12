@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "langchain-superion"
+version = "0.1.0"
+description = "LangChain integration for Superion S1 — calibrated decision tool, guardrail and router (Punky Tiger Labs)."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10,<4.0"
+authors = [{ name = "Punky Tiger Labs", email = "alvaro.lopez@punkytigerlabs.com" }]
+keywords = ["langchain", "superion", "classification", "guardrail", "router", "calibrated"]
+dependencies = ["langchain-core>=0.3.15,<2.0", "superion-s1>=0.1.0,<1"]
+
+[project.optional-dependencies]
+test = ["pytest>=7", "pytest-asyncio>=0.23", "langchain-tests>=0.3.5"]
+
+[project.urls]
+Homepage = "https://punkytigerlabs.com/s1/"
+Documentation = "https://punkytigerlabs.com/s1/docs"
+Source = "https://github.com/PunkyTigerLabs/superion-s1/tree/main/integrations/langchain"
+
+[tool.hatch.build.targets.wheel]
+packages = ["langchain_superion"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"

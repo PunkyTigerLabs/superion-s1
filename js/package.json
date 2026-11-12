@@ -1,0 +1,64 @@
+{
+  "name": "@punkytigerlabs/superion-s1",
+  "version": "0.1.0",
+  "description": "JavaScript/TypeScript client for Superion S1 \u2014 calibrated yes/no, choice and score decisions in one API call (Punky Tiger Labs).",
+  "license": "MIT",
+  "author": "Punky Tiger Labs <alvaro.lopez@punkytigerlabs.com>",
+  "homepage": "https://punkytigerlabs.com/s1/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PunkyTigerLabs/superion-s1.git",
+    "directory": "js"
+  },
+  "keywords": [
+    "superion",
+    "classification",
+    "calibrated",
+    "llm",
+    "decision",
+    "moderation",
+    "guardrail",
+    "api"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean --target node20",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:live": "S1_LIVE=1 vitest run test/live.test.ts",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

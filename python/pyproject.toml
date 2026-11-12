@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "superion-s1"
+dynamic = ["version"]
+description = "Python client for Superion S1 — calibrated yes/no, choice and score decisions in one API call (Punky Tiger Labs)."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+authors = [{ name = "Punky Tiger Labs", email = "alvaro.lopez@punkytigerlabs.com" }]
+keywords = ["superion", "classification", "calibrated", "llm", "decision", "moderation", "guardrail", "api"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Typing :: Typed",
+]
+dependencies = ["httpx>=0.24,<1"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pytest-asyncio>=0.23", "respx>=0.21"]
+
+[project.urls]
+Homepage = "https://punkytigerlabs.com/s1/"
+Documentation = "https://punkytigerlabs.com/s1/docs"
+Source = "https://github.com/PunkyTigerLabs/superion-s1/tree/main/python"
+Leaderboard = "https://huggingface.co/datasets/hotchpotch/s1mb-result"
+
+[tool.hatch.version]
+path = "src/superion_s1/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/superion_s1"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = ["live: hits the real API (needs SUPERION_API_KEY)"]
