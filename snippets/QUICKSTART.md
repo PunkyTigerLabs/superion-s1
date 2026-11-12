@@ -1,7 +1,7 @@
 # Superion S1 — Quickstart
 
 Calibrated decisions in one call: ask yes/no (`noul`), `choice` and `score` questions about any text and get
-one calibrated probability per question, without text generation (~0.3 s p50).
+one calibrated probability per question, without text generation (sub-second).
 
 **#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** —
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)
@@ -46,7 +46,7 @@ d = s1.decide(
         "urgency": score("How urgent is a reply?", ["not urgent", "somewhat urgent", "very urgent"]),
     },
 )
-print(d["refund"].p, d["sentiment"].best, d["urgency"].best_label)   # 0.9997 neg very urgent
+print(d["refund"].p, d["sentiment"].best, d["urgency"].best_label)   # 0.9998 neg very urgent
 ```
 
 ### JavaScript / TypeScript
@@ -69,7 +69,7 @@ const d = await s1.decide(
     urgency: score("How urgent is a reply?", ["not urgent", "somewhat urgent", "very urgent"]),
   },
 );
-console.log(d.answers.refund.p, d.answers.sentiment.best, d.answers.urgency.bestLabel); // 0.9997 neg very urgent
+console.log(d.answers.refund.p, d.answers.sentiment.best, d.answers.urgency.bestLabel); // 0.9998 neg very urgent
 ```
 
 ### Response
@@ -77,12 +77,14 @@ console.log(d.answers.refund.p, d.answers.sentiment.best, d.answers.urgency.best
 ```json
 {
   "model": "superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc",
-  "usage": {"input_tokens": 135, "output_tokens": 0},
   "answers": {
-    "refund":    {"type": "noul",   "noul": 0.9997},
-    "sentiment": {"type": "choice", "probabilities": {"pos": 0.0003, "neg": 0.9943, "neu": 0.0054}},
-    "urgency":   {"type": "score",  "probabilities": {"0": 0.0000, "1": 0.1922, "2": 0.8078}}
-  }
+    "refund":    {"type": "noul",   "noul": 0.9998},
+    "sentiment": {"type": "choice", "choice": "neg", "confidence": 0.9661, "probabilities": {"pos": 0.0003, "neg": 0.9941, "neu": 0.0056}},
+    "urgency":   {"type": "score",  "score": 1.9393, "confidence": 0.7917, "probabilities": {"0": 0.0000, "1": 0.0607, "2": 0.9393},
+                  "legend": {"0": "not urgent", "1": "somewhat urgent", "2": "very urgent"}}
+  },
+  "usage": {"input_tokens": 135, "output_tokens": 0},
+  "meta": {"request_id": "63a6718e-ab64-404b-92f3-fdba826d0dfe", "mode": "live", "latency_ms": 103}
 }
 ```
 

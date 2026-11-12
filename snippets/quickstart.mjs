@@ -11,4 +11,4 @@ const d = await s1.decide(
     urgency: score("How urgent is a reply?", ["not urgent", "somewhat urgent", "very urgent"]),
   },
 );
-console.log(d.answers.refund.p, d.answers.sentiment.best, d.answers.urgency.bestLabel); // 0.9997 neg very urgent
+console.log(d.answers.refund.p, d.answers.sentiment.best, d.answers.urgency.bestLabel); // 0.9998 neg very urgent

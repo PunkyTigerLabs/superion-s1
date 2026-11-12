@@ -1,7 +1,7 @@
 # Superion S1
 
 **Calibrated decisions in one API call.** Send a text and typed questions (yes/no, choice, score) and get
-one calibrated probability per question, without generating text, in about 0.3 s (p50).
+one calibrated probability per question, without generating text, in well under a second.
 
 **#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** ·
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)
@@ -14,10 +14,10 @@ one calibrated probability per question, without generating text, in about 0.3 s
 Built by [Punky Tiger Labs](https://punkytigerlabs.com) on Gemma 4 26B-A4B, INT4 experts.
 
 ```
-"Message: The laptop arrived broken. I want my money back now."
-  refund     (yes/no)  ->  0.9997
-  sentiment  (choice)  ->  neg 0.994 · neu 0.005 · pos 0.000
-  urgency    (score)   ->  very urgent 0.81 · somewhat urgent 0.19 · not urgent 0.00
+"Message: The laptop arrived broken. I want my money back now, this is unacceptable."
+  refund     (yes/no)  ->  0.9998
+  sentiment  (choice)  ->  neg 0.994 · neu 0.006 · pos 0.000
+  urgency    (score)   ->  very urgent 0.94 · somewhat urgent 0.06 · not urgent 0.00
 ```
 
 Use it to triage tickets, moderate content, score leads, route prompts to the right LLM or decide

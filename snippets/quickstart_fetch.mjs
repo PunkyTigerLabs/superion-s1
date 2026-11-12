@@ -11,4 +11,4 @@ const r = await fetch("https://api.punkytigerlabs.com/v1/systemone", {
   }),
 });
 if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
-console.log((await r.json()).answers.refund.noul); // 0.9997
+console.log((await r.json()).answers.refund.noul); // 0.9998

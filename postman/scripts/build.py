@@ -113,7 +113,7 @@ def main(src, dst):
     col = json.load(open(src))
     col["info"]["name"] = "Superion S1 API — Punky Tiger Labs"
     col["info"]["description"] = (
-        "Calibrated decisions in one call: yes/no (`noul`), `choice` and `score` probabilities, no text generation, ~0.3 s p50.\n\n"
+        "Calibrated decisions in one call: yes/no (`noul`), `choice` and `score` probabilities, no text generation, sub-second.\n\n"
         "**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** — "
         "[leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).\n\n"
         "1. Get a free key (100 M input tokens/day) at https://punkytigerlabs.com/s1/\n"

@@ -27,7 +27,7 @@ d = s1.decide(
     },
 )
 
-d["refund"].p             # 0.9997  probability of "true"
+d["refund"].p             # 0.9998  probability of "true"
 d["sentiment"].best       # "neg"
 d["sentiment"].probabilities  # {"pos": 0.0003, "neg": 0.9943, "neu": 0.0054}
 d["urgency"].best_label   # "very urgent"
@@ -118,7 +118,7 @@ S1_LIVE=1 SUPERION_API_KEY=s1k_... pytest tests/test_live.py   # 2 real calls
 
 **#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** —
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).
-Calibrated probabilities, one call, no text generation, ~0.3 s p50. Built on Gemma 4 26B-A4B, INT4 experts.
+Calibrated probabilities, one call, no text generation, sub-second. Built on Gemma 4 26B-A4B, INT4 experts.
 
 | Plan | Price |
 |---|---|

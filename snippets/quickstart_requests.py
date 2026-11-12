@@ -15,4 +15,4 @@ r = requests.post(
     timeout=120,
 )
 r.raise_for_status()
-print(r.json()["answers"]["refund"]["noul"])   # 0.9997
+print(r.json()["answers"]["refund"]["noul"])   # 0.9998

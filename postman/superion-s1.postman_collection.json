@@ -181,7 +181,7 @@
                   "value": "<string>"
                 }
               ],
-              "body": "{\n  \"model\": \"superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc\",\n  \"usage\": {\n    \"input_tokens\": 135,\n    \"output_tokens\": 0\n  },\n  \"answers\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"noul\": 0.9997\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"probabilities\": {\n        \"pos\": 0.0003,\n        \"neg\": 0.9943,\n        \"neu\": 0.0054\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"probabilities\": {\n        \"0\": 0.0,\n        \"1\": 0.1922,\n        \"2\": 0.8078\n      }\n    }\n  }\n}",
+              "body": "{\n  \"model\": \"superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc\",\n  \"answers\": {\n    \"refund\": {\n      \"type\": \"noul\",\n      \"noul\": 0.9998\n    },\n    \"sentiment\": {\n      \"type\": \"choice\",\n      \"choice\": \"neg\",\n      \"confidence\": 0.9661,\n      \"probabilities\": {\n        \"pos\": 0.0003,\n        \"neg\": 0.9941,\n        \"neu\": 0.0056\n      }\n    },\n    \"urgency\": {\n      \"type\": \"score\",\n      \"score\": 1.9393,\n      \"confidence\": 0.7917,\n      \"probabilities\": {\n        \"0\": 0.0,\n        \"1\": 0.0607,\n        \"2\": 0.9393\n      },\n      \"legend\": {\n        \"0\": \"not urgent\",\n        \"1\": \"somewhat urgent\",\n        \"2\": \"very urgent\"\n      }\n    }\n  },\n  \"usage\": {\n    \"input_tokens\": 135,\n    \"output_tokens\": 0\n  },\n  \"meta\": {\n    \"request_id\": \"63a6718e-ab64-404b-92f3-fdba826d0dfe\",\n    \"mode\": \"live\",\n    \"latency_ms\": 103\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -1517,6 +1517,6 @@
     "_postman_id": "cfa7458b-6c8c-47f3-a339-7f8929feaa4c",
     "name": "Superion S1 API — Punky Tiger Labs",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Calibrated decisions in one call: yes/no (`noul`), `choice` and `score` probabilities, no text generation, ~0.3 s p50.\n\n**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** — [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).\n\n1. Get a free key (100 M input tokens/day) at https://punkytigerlabs.com/s1/\n2. Set the collection variable `apiKey` (or a Postman environment) to your key `s1k_…`.\n3. Send *Support ticket*.\n\nPrepaid: 0.042 USD per million input tokens, output free. Docs: https://punkytigerlabs.com/s1/docs"
+    "description": "Calibrated decisions in one call: yes/no (`noul`), `choice` and `score` probabilities, no text generation, sub-second.\n\n**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** — [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).\n\n1. Get a free key (100 M input tokens/day) at https://punkytigerlabs.com/s1/\n2. Set the collection variable `apiKey` (or a Postman environment) to your key `s1k_…`.\n3. Send *Support ticket*.\n\nPrepaid: 0.042 USD per million input tokens, output free. Docs: https://punkytigerlabs.com/s1/docs"
   }
 }

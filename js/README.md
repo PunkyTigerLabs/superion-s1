@@ -28,7 +28,7 @@ const d = await s1.decide(
   },
 );
 
-d.answers.refund.p;            // 0.9997  — typed as NoulAnswer
+d.answers.refund.p;            // 0.9998  — typed as NoulAnswer
 d.answers.sentiment.best;      // "neg"   — ChoiceAnswer
 d.answers.urgency.bestLabel;   // "very urgent" — ScoreAnswer (.expected, .normalized)
 d.usage.inputTokens;           // 135 billed tokens; output is always 0
@@ -89,7 +89,7 @@ S1_LIVE=1 SUPERION_API_KEY=s1k_... npm run test:live
 
 **#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** —
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).
-Calibrated probabilities, one call, no text generation, ~0.3 s p50. Built on Gemma 4 26B-A4B, INT4 experts.
+Calibrated probabilities, one call, no text generation, sub-second. Built on Gemma 4 26B-A4B, INT4 experts.
 
 | Plan | Price |
 |---|---|

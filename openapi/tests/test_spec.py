@@ -36,15 +36,49 @@ def test_response_example_matches_schema():
     validator("DecisionResponse").validate(SPEC["components"]["examples"]["SupportTicketResponse"]["value"])
 
 
-# Real response to the support-ticket example, captured 12 Nov 2026 (v6), unrounded.
+# Real response to the support-ticket example, captured 12 Nov 2026 (v6, standard System One fields), unrounded.
 REAL_RESPONSE = {
     "model": "superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc",
-    "usage": {"input_tokens": 135, "output_tokens": 0},
     "answers": {
-        "refund": {"type": "noul", "noul": 0.9997470683161428},
-        "sentiment": {"type": "choice", "probabilities": {"pos": 0.0002855798545093104, "neg": 0.9942880386883389, "neu": 0.005426381457151809}},
-        "urgency": {"type": "score", "probabilities": {"0": 1.2019009452913502e-12, "1": 0.19215297234497805, "2": 0.8078470276538201}},
+        "refund": {
+            "type": "noul",
+            "noul": 0.9997738426471016
+        },
+        "sentiment": {
+            "type": "choice",
+            "choice": "neg",
+            "confidence": 0.9661078091953123,
+            "probabilities": {
+                "pos": 0.00027874351210867125,
+                "neg": 0.9941105510056911,
+                "neu": 0.005610705482200238
+            }
+        },
+        "urgency": {
+            "type": "score",
+            "score": 1.9393103209519216,
+            "confidence": 0.7916817431005813,
+            "probabilities": {
+                "0": 3.1653934237634735e-13,
+                "1": 0.06068967904744524,
+                "2": 0.9393103209522382
+            },
+            "legend": {
+                "0": "not urgent",
+                "1": "somewhat urgent",
+                "2": "very urgent"
+            }
+        }
     },
+    "usage": {
+        "input_tokens": 135,
+        "output_tokens": 0
+    },
+    "meta": {
+        "request_id": "63a6718e-ab64-404b-92f3-fdba826d0dfe",
+        "mode": "live",
+        "latency_ms": 103
+    }
 }
 
 
@@ -89,3 +123,10 @@ def test_marketplace_spec_hides_account_endpoints():
     validate(m)
     assert set(m["paths"]) == {"/v1/systemone", "/v1/models", "/health"}
     assert m["paths"]["/v1/systemone"] == SPEC["paths"]["/v1/systemone"]
+
+
+def test_old_response_without_standard_fields_is_rejected():
+    old = {"model": REAL_RESPONSE["model"], "usage": REAL_RESPONSE["usage"],
+           "answers": {k: {kk: vv for kk, vv in v.items() if kk in ("type", "noul", "probabilities")} for k, v in REAL_RESPONSE["answers"].items()}}
+    with pytest.raises(jsonschema.ValidationError):
+        validator("DecisionResponse").validate(old)

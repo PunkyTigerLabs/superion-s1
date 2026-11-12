@@ -11,4 +11,4 @@ d = s1.decide(
         "urgency": score("How urgent is a reply?", ["not urgent", "somewhat urgent", "very urgent"]),
     },
 )
-print(d["refund"].p, d["sentiment"].best, d["urgency"].best_label)   # 0.9997 neg very urgent
+print(d["refund"].p, d["sentiment"].best, d["urgency"].best_label)   # 0.9998 neg very urgent

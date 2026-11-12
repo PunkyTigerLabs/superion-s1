@@ -27,7 +27,7 @@ from langchain_superion import SuperionDecisionTool
 tool = SuperionDecisionTool()
 tool.invoke({"state": "Message: The laptop arrived broken. I want my money back.",
              "question": "Does the customer ask for a refund?"})
-# '{"type": "noul", "p_yes": 0.9997}'
+# '{"type": "noul", "p_yes": 0.9996}'
 
 tool.invoke({"state": "Ticket: my card was charged twice", "question": "Which team should handle it?",
              "type": "choice", "options": ["billing", "tech", "sales"]})
@@ -77,7 +77,7 @@ S1_LIVE=1 SUPERION_API_KEY=s1k_... pytest tests/integration_tests   # ToolsInteg
 
 **#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** —
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).
-Calibrated probabilities, one call, no text generation, ~0.3 s p50. Built on Gemma 4 26B-A4B, INT4 experts.
+Calibrated probabilities, one call, no text generation, sub-second. Built on Gemma 4 26B-A4B, INT4 experts.
 
 | Plan | Price |
 |---|---|

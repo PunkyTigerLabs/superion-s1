@@ -2,20 +2,22 @@
 openapi: 3.1.0
 info:
   title: Superion S1 API (marketplace)
-  version: 1.0.0
+  version: 1.1.0
   summary: Calibrated decisions in one call — yes/no, choice and score probabilities, no text generation.
   description: "Superion S1 by Punky Tiger Labs is a **calibrated decision API**. Send a text (the\n*state*, up to 32,768\
     \ tokens per question) and any number of typed questions:\n\n* `noul` — yes/no, returns the probability of `true`;\n*\
-    \ `choice` — pick one of 2–255 options, returns a probability per option id;\n* `score` — an ordered scale of 2–16 levels,\
-    \ returns a probability per level index.\n\nOne request returns one probability distribution per question, without generating\
-    \ text\n(~0.3 s p50). Output tokens are always 0 and free.\n\n**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda\
-    \ 89.88 (Nov 2026)**\n([leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)).\nBuilt on Gemma 4 26B-A4B,\
-    \ INT4 experts.\n\nAccount and key-management endpoints are not available through marketplaces.\n\n    **Plans.** Free:\
-    \ 100 M input tokens per day per key, permanent. Prepaid: 0.042 USD per\nmillion input tokens, output free. Contract:\
-    \ dedicated key. Get a key at\nhttps://punkytigerlabs.com/s1/.\n\n**Browsers.** `/v1/systemone`, `/v1/usage` and `/v1/keys/*`\
-    \ are server-to-server and send\nno CORS headers. Call them from your backend. `/health` and `/v1/models` are public.\n\
-    \n**Timeouts.** Use a client timeout of at least 120 s: most requests finish well under a\nsecond, but a large state arriving\
-    \ while the fair queue is full can wait up to ~70 s.\n"
+    \ `choice` — pick one of 2–255 options, returns the chosen option, a probability per option id and a confidence;\n* `score`\
+    \ — an ordered scale of 2–16 levels, returns the expected level, a probability per level, a confidence and a legend.\n\
+    \nOne request returns one probability distribution per question, without generating text, in\nwell under a second. Output\
+    \ tokens are always 0 and free. The API follows the standard\nSystem One request and response format. Responses are deterministic:\
+    \ a pinned model version\nreturns the same probabilities for the same request.\n\n**#1 of 213 on S1MB English v1 — Task\
+    \ Average 75.06 · Borda 89.88 (Nov 2026)**\n([leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)).\n\
+    Built on Gemma 4 26B-A4B, INT4 experts.\n\nAccount and key-management endpoints are not available through marketplaces.\n\
+    \n    **Plans.** Free: 100 M input tokens per day per key, permanent. Prepaid: 0.042 USD per\nmillion input tokens, output\
+    \ free. Contract: dedicated key. Get a key at\nhttps://punkytigerlabs.com/s1/.\n\n**Browsers.** `/v1/systemone`, `/v1/usage`\
+    \ and `/v1/keys/*` are server-to-server and send\nno CORS headers. Call them from your backend. `/health` and `/v1/models`\
+    \ are public.\n\n**Timeouts.** Use a client timeout of at least 120 s: most requests finish well under a\nsecond, but\
+    \ a large state arriving while the fair queue is full can wait up to ~70 s.\n"
   termsOfService: https://punkytigerlabs.com/s1/terms
   contact:
     name: Punky Tiger Labs
@@ -72,6 +74,8 @@ paths:
         '200':
           description: One answer per question.
           headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
             X-RateLimit-Limit:
               $ref: '#/components/headers/X-RateLimit-Limit'
             X-RateLimit-Remaining:
@@ -156,14 +160,20 @@ components:
   schemas:
     ModelId:
       type: string
-      description: Immutable model version ID. The hash after `@sha256:` identifies the exact package served.
+      description: 'Immutable model version ID (the hash after `@sha256:` identifies the exact package served), or
+
+        `superion-s1-latest`, which follows the current recommended release. If `model` is omitted,
+
+        `superion-s1-latest` is used. Responses always name the pinned release that answered.
+
+        '
       examples:
+      - superion-s1-latest
       - superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc
       - superion-s1-v5-int4e-vllm-kv1@sha256:47f7571c
     DecisionRequest:
       type: object
       required:
-      - model
       - state
       - questions
       additionalProperties: false
@@ -261,18 +271,40 @@ components:
       type: object
       required:
       - model
-      - usage
       - answers
+      - usage
+      - meta
       properties:
         model:
           $ref: '#/components/schemas/ModelId'
-        usage:
-          $ref: '#/components/schemas/TokenUsage'
         answers:
           type: object
           description: Question id → answer, same ids as the request.
           additionalProperties:
             $ref: '#/components/schemas/Answer'
+        usage:
+          $ref: '#/components/schemas/TokenUsage'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    Meta:
+      type: object
+      required:
+      - request_id
+      - mode
+      - latency_ms
+      properties:
+        request_id:
+          type: string
+          description: Unique id of this request; same value as the `X-Request-ID` header. Quote it to support.
+        mode:
+          type: string
+          const: live
+        latency_ms:
+          type: integer
+          description: Server-side time (admission, queue and inference); excludes your network round trip.
+        cost_usd:
+          type: string
+          description: Prepaid keys — exact charge for this request in USD, as a decimal string.
     TokenUsage:
       type: object
       required:
@@ -315,11 +347,18 @@ components:
       type: object
       required:
       - type
+      - choice
+      - confidence
       - probabilities
       properties:
         type:
           type: string
           const: choice
+        choice:
+          type: string
+          description: The most likely option id.
+        confidence:
+          $ref: '#/components/schemas/Confidence'
         probabilities:
           type: object
           description: Option id → probability (sums to 1).
@@ -331,11 +370,19 @@ components:
       type: object
       required:
       - type
+      - score
+      - confidence
       - probabilities
+      - legend
       properties:
         type:
           type: string
           const: score
+        score:
+          type: number
+          description: Expected level on the scale, from 0 to N−1 (probability-weighted).
+        confidence:
+          $ref: '#/components/schemas/Confidence'
         probabilities:
           type: object
           description: Level index ("0" = lowest) → probability (sums to 1).
@@ -345,6 +392,20 @@ components:
             type: number
             minimum: 0
             maximum: 1
+        legend:
+          type: object
+          description: Level index → the level description you sent.
+          additionalProperties:
+            type: string
+    Confidence:
+      type: number
+      minimum: 0
+      maximum: 1
+      description: 'Normalized inverse entropy of the probabilities, `1 − H(p) / ln(n)` for n options: 1 when one
+
+        option holds all the probability, 0 when all are equally likely. Not the chosen option''s probability.
+
+        '
     ModelList:
       type: object
       required:
@@ -400,10 +461,20 @@ components:
         error:
           type: string
           description: Human-readable message saying what to fix.
+        code:
+          type: string
+          description: Machine-readable code on some errors — `insufficient_credits` (402), `rate_limited` (429).
+        contact_url:
+          type: string
+          description: Present on 402 — where to add credits.
         balance_usd:
           type: number
           description: Present on 402.
   headers:
+    X-Request-ID:
+      description: Unique id of the request, on every response (also errors); equals `meta.request_id`.
+      schema:
+        type: string
     X-RateLimit-Limit:
       description: Prepaid — requests per minute.
       schema:
@@ -554,25 +625,37 @@ components:
       summary: Real response (v6, 12 Nov 2026, rounded to 4 decimals)
       value:
         model: superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc
-        usage:
-          input_tokens: 135
-          output_tokens: 0
         answers:
           refund:
             type: noul
-            noul: 0.9997
+            noul: 0.9998
           sentiment:
             type: choice
+            choice: neg
+            confidence: 0.9661
             probabilities:
               pos: 0.0003
-              neg: 0.9943
-              neu: 0.0054
+              neg: 0.9941
+              neu: 0.0056
           urgency:
             type: score
+            score: 1.9393
+            confidence: 0.7917
             probabilities:
               '0': 0.0
-              '1': 0.1922
-              '2': 0.8078
+              '1': 0.0607
+              '2': 0.9393
+            legend:
+              '0': not urgent
+              '1': somewhat urgent
+              '2': very urgent
+        usage:
+          input_tokens: 135
+          output_tokens: 0
+        meta:
+          request_id: 63a6718e-ab64-404b-92f3-fdba826d0dfe
+          mode: live
+          latency_ms: 103
     ModerationRequest:
       summary: Content moderation
       value:
