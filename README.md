@@ -3,7 +3,7 @@
 **Calibrated decisions in one API call.** Send a text and typed questions (yes/no, choice, score) and get
 one calibrated probability per question, without generating text, in well under a second.
 
-**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** ·
+**#1 of 214 on S1MB English v1 — Task Average 75.06 · Borda 89.82 (12 Nov 2026)** ·
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)
 
 [Website](https://punkytigerlabs.com/s1/) · [Docs](https://punkytigerlabs.com/s1/docs) ·
@@ -26,7 +26,7 @@ it says: route automatically above 0.8 and send the rest to a person.
 
 ## Quickstart
 
-Get a free key (100 M input tokens per day, permanent) at https://punkytigerlabs.com/s1/
+Get a free key (20 M input tokens per day, permanent) at https://punkytigerlabs.com/s1/
 
 ```bash
 curl https://api.punkytigerlabs.com/v1/systemone \
@@ -92,7 +92,7 @@ never truncated. Full reference: https://punkytigerlabs.com/s1/docs
 
 | Plan | Price |
 |---|---|
-| Free | 100 M input tokens per day per key, permanent |
+| Free | 20 M input tokens per day per key, permanent |
 | Prepaid | 0.042 USD per million input tokens, output free |
 | Contract | dedicated key, price on request |
 

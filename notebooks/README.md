@@ -4,7 +4,7 @@
 |---|---|
 | **Calibrated ticket triage in 10 lines** — route tickets to a team, rate urgency, flag refunds, and send only the uncertain ones to a human | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PunkyTigerLabs/superion-s1/blob/main/notebooks/calibrated_ticket_triage.ipynb) |
 
-The notebook uses your own **free key** (100 M input tokens per day): get it at
+The notebook uses your own **free key** (20 M input tokens per day): get it at
 https://punkytigerlabs.com/s1/ and store it in Colab as the secret `SUPERION_API_KEY`.
 6 tickets × 3 decisions use about 900 input tokens.
 
@@ -18,13 +18,13 @@ S1_LIVE=1 SUPERION_API_KEY=s1k_... pytest tests             # runs the notebook 
 
 ## About Superion S1
 
-**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** —
+**#1 of 214 on S1MB English v1 — Task Average 75.06 · Borda 89.82 (12 Nov 2026)** —
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).
-Calibrated probabilities, one call, no text generation, sub-second. Built on Gemma 4 26B-A4B, INT4 experts.
+Calibrated probabilities, one call, no text generation, sub-second, deterministic within a pinned model version. Built on Gemma 4 26B-A4B, INT4 experts.
 
 | Plan | Price |
 |---|---|
-| Free | 100 M input tokens per day per key, permanent |
+| Free | 20 M input tokens per day per key, permanent |
 | Prepaid | 0.042 USD per million input tokens, output free |
 | Contract | dedicated key, price on request |
 

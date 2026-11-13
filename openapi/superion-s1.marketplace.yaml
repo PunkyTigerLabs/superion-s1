@@ -9,11 +9,11 @@ info:
     \ `choice` — pick one of 2–255 options, returns the chosen option, a probability per option id and a confidence;\n* `score`\
     \ — an ordered scale of 2–16 levels, returns the expected level, a probability per level, a confidence and a legend.\n\
     \nOne request returns one probability distribution per question, without generating text, in\nwell under a second. Output\
-    \ tokens are always 0 and free. The API follows the standard\nSystem One request and response format. Responses are deterministic:\
-    \ a pinned model version\nreturns the same probabilities for the same request.\n\n**#1 of 213 on S1MB English v1 — Task\
-    \ Average 75.06 · Borda 89.88 (Nov 2026)**\n([leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)).\n\
+    \ tokens are always 0 and free. The API follows the standard\nSystem One request and response format. Deterministic within\
+    \ a pinned model version: the same request to the\nsame pinned version returns the same probabilities.\n\n**#1 of 214\
+    \ on S1MB English v1 — Task Average 75.06 · Borda 89.82 (12 Nov 2026)**\n([leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)).\n\
     Built on Gemma 4 26B-A4B, INT4 experts.\n\nAccount and key-management endpoints are not available through marketplaces.\n\
-    \n    **Plans.** Free: 100 M input tokens per day per key, permanent. Prepaid: 0.042 USD per\nmillion input tokens, output\
+    \n    **Plans.** Free: 20 M input tokens per day per key, permanent. Prepaid: 0.042 USD per\nmillion input tokens, output\
     \ free. Contract: dedicated key. Get a key at\nhttps://punkytigerlabs.com/s1/.\n\n**Browsers.** `/v1/systemone`, `/v1/usage`\
     \ and `/v1/keys/*` are server-to-server and send\nno CORS headers. Call them from your backend. `/health` and `/v1/models`\
     \ are public.\n\n**Timeouts.** Use a client timeout of at least 120 s: most requests finish well under a\nsecond, but\

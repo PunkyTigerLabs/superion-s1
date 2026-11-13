@@ -1002,7 +1002,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"key_id\": \"key_example\",\n  \"plan\": \"prepaid\",\n  \"day_utc\": \"20261112\",\n  \"requests_today\": 1840,\n  \"tokens_today\": 412300,\n  \"limits\": {\n    \"requests_per_minute\": 1500,\n    \"tokens_per_minute\": 7500000,\n    \"requests_per_day\": null,\n    \"tokens_per_day\": null,\n    \"tokens_per_month\": null\n  },\n  \"balance_usd\": 19.982684,\n  \"price_usd_per_million_input_tokens\": 0.042,\n  \"output_tokens_price\": 0,\n  \"history\": [\n    {\n      \"day_utc\": \"20261112\",\n      \"requests\": 1840,\n      \"input_tokens\": 412300,\n      \"cost_usd\": 0.017316\n    }\n  ],\n  \"purchases\": [\n    {\n      \"t\": 1794931200,\n      \"usd\": 20.0,\n      \"ref\": \"cs_example\"\n    }\n  ]\n}",
+              "body": "{\n  \"key_id\": \"key_example\",\n  \"plan\": \"prepaid\",\n  \"day_utc\": \"20261112\",\n  \"requests_today\": 1840,\n  \"tokens_today\": 412300,\n  \"limits\": {\n    \"requests_per_minute\": 240,\n    \"tokens_per_minute\": 80000,\n    \"requests_per_day\": null,\n    \"tokens_per_day\": null,\n    \"tokens_per_month\": null\n  },\n  \"balance_usd\": 19.982684,\n  \"price_usd_per_million_input_tokens\": 0.042,\n  \"output_tokens_price\": 0,\n  \"history\": [\n    {\n      \"day_utc\": \"20261112\",\n      \"requests\": 1840,\n      \"input_tokens\": 412300,\n      \"cost_usd\": 0.017316\n    }\n  ],\n  \"purchases\": [\n    {\n      \"t\": 1794931200,\n      \"usd\": 20.0,\n      \"ref\": \"cs_example\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -1517,6 +1517,6 @@
     "_postman_id": "cfa7458b-6c8c-47f3-a339-7f8929feaa4c",
     "name": "Superion S1 API — Punky Tiger Labs",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Calibrated decisions in one call: yes/no (`noul`), `choice` and `score` probabilities, no text generation, sub-second.\n\n**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** — [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).\n\n1. Get a free key (100 M input tokens/day) at https://punkytigerlabs.com/s1/\n2. Set the collection variable `apiKey` (or a Postman environment) to your key `s1k_…`.\n3. Send *Support ticket*.\n\nPrepaid: 0.042 USD per million input tokens, output free. Docs: https://punkytigerlabs.com/s1/docs"
+    "description": "Calibrated decisions in one call: yes/no (`noul`), `choice` and `score` probabilities, no text generation, sub-second.\n\n**#1 of 214 on S1MB English v1 — Task Average 75.06 · Borda 89.82 (12 Nov 2026)** — [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).\n\n1. Get a free key (20 M input tokens/day) at https://punkytigerlabs.com/s1/\n2. Set the collection variable `apiKey` (or a Postman environment) to your key `s1k_…`.\n3. Send *Support ticket*.\n\nPrepaid: 0.042 USD per million input tokens, output free. Docs: https://punkytigerlabs.com/s1/docs"
   }
 }

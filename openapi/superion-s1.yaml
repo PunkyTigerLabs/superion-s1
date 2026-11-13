@@ -13,14 +13,14 @@ info:
 
     One request returns one probability distribution per question, without generating text, in
     well under a second. Output tokens are always 0 and free. The API follows the standard
-    System One request and response format. Responses are deterministic: a pinned model version
-    returns the same probabilities for the same request.
+    System One request and response format. Deterministic within a pinned model version: the same request to the
+    same pinned version returns the same probabilities.
 
-    **#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)**
+    **#1 of 214 on S1MB English v1 — Task Average 75.06 · Borda 89.82 (12 Nov 2026)**
     ([leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)).
     Built on Gemma 4 26B-A4B, INT4 experts.
 
-    **Plans.** Free: 100 M input tokens per day per key, permanent. Prepaid: 0.042 USD per
+    **Plans.** Free: 20 M input tokens per day per key, permanent. Prepaid: 0.042 USD per
     million input tokens, output free. Contract: dedicated key. Get a key at
     https://punkytigerlabs.com/s1/.
 
@@ -161,8 +161,8 @@ paths:
                     requests_today: 1840
                     tokens_today: 412300
                     limits:
-                      requests_per_minute: 1500
-                      tokens_per_minute: 7500000
+                      requests_per_minute: 240
+                      tokens_per_minute: 80000
                       requests_per_day: null
                       tokens_per_day: null
                       tokens_per_month: null

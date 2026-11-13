@@ -15,7 +15,7 @@ File: [`superion-s1.postman_collection.json`](superion-s1.postman_collection.jso
 
 ## Use
 
-1. Get a free key (100 M input tokens/day) at https://punkytigerlabs.com/s1/
+1. Get a free key (20 M input tokens/day) at https://punkytigerlabs.com/s1/
 2. *Import* the JSON file in Postman.
 3. Set the collection variable `apiKey` (or an environment variable with the same name) to your `s1k_…` key.
 4. Send *Support ticket*. Each decision request has tests: 200, one answer per question, probabilities in [0, 1], output tokens 0.
@@ -36,13 +36,13 @@ Run it headless with Newman: `npx newman run superion-s1.postman_collection.json
 
 ## About Superion S1
 
-**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** —
+**#1 of 214 on S1MB English v1 — Task Average 75.06 · Borda 89.82 (12 Nov 2026)** —
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).
-Calibrated probabilities, one call, no text generation, sub-second. Built on Gemma 4 26B-A4B, INT4 experts.
+Calibrated probabilities, one call, no text generation, sub-second, deterministic within a pinned model version. Built on Gemma 4 26B-A4B, INT4 experts.
 
 | Plan | Price |
 |---|---|
-| Free | 100 M input tokens per day per key, permanent |
+| Free | 20 M input tokens per day per key, permanent |
 | Prepaid | 0.042 USD per million input tokens, output free |
 | Contract | dedicated key, price on request |
 

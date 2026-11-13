@@ -75,13 +75,13 @@ S1_LIVE=1 SUPERION_API_KEY=s1k_... pytest tests/integration_tests   # ToolsInteg
 
 ## About Superion S1
 
-**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** —
+**#1 of 214 on S1MB English v1 — Task Average 75.06 · Borda 89.82 (12 Nov 2026)** —
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).
-Calibrated probabilities, one call, no text generation, sub-second. Built on Gemma 4 26B-A4B, INT4 experts.
+Calibrated probabilities, one call, no text generation, sub-second, deterministic within a pinned model version. Built on Gemma 4 26B-A4B, INT4 experts.
 
 | Plan | Price |
 |---|---|
-| Free | 100 M input tokens per day per key, permanent |
+| Free | 20 M input tokens per day per key, permanent |
 | Prepaid | 0.042 USD per million input tokens, output free |
 | Contract | dedicated key, price on request |
 

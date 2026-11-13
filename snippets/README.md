@@ -1,13 +1,12 @@
 # Superion S1 — quickstart snippets
 
 Reusable, tested quickstart snippets for **Superion S1** by Punky Tiger Labs, for the website,
-Hugging Face model card / Space, RapidAPI, Postman and blog posts. Every snippet sends the same
+Hugging Face model card / Space, Postman and blog posts. Every snippet sends the same
 documented example and was run against the live API on 12 Nov 2026.
 
 | file | use |
 |---|---|
 | `snippets/QUICKSTART.md` | all-in-one block (curl + Python + JS + response) for web, HF and READMEs |
-| `snippets/QUICKSTART_RAPIDAPI.md` | RapidAPI variant (fill `RAPIDAPI_HOST` once the listing exists) |
 | `snippets/quickstart.sh` | curl |
 | `snippets/quickstart.py` | Python SDK (`pip install superion-s1`) |
 | `snippets/quickstart_requests.py` | Python without SDK |
@@ -27,13 +26,13 @@ SUPERION_API_KEY=s1k_... bash tests/test_snippets.sh     # 4-5 real requests
 
 ## About Superion S1
 
-**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** —
+**#1 of 214 on S1MB English v1 — Task Average 75.06 · Borda 89.82 (12 Nov 2026)** —
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result).
-Calibrated probabilities, one call, no text generation, sub-second. Built on Gemma 4 26B-A4B, INT4 experts.
+Calibrated probabilities, one call, no text generation, sub-second, deterministic within a pinned model version. Built on Gemma 4 26B-A4B, INT4 experts.
 
 | Plan | Price |
 |---|---|
-| Free | 100 M input tokens per day per key, permanent |
+| Free | 20 M input tokens per day per key, permanent |
 | Prepaid | 0.042 USD per million input tokens, output free |
 | Contract | dedicated key, price on request |
 

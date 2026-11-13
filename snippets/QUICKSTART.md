@@ -3,10 +3,10 @@
 Calibrated decisions in one call: ask yes/no (`noul`), `choice` and `score` questions about any text and get
 one calibrated probability per question, without text generation (sub-second).
 
-**#1 of 213 on S1MB English v1 — Task Average 75.06 · Borda 89.88 (Nov 2026)** —
+**#1 of 214 on S1MB English v1 — Task Average 75.06 · Borda 89.82 (12 Nov 2026)** —
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)
 
-1. Get a free key (100 M input tokens per day): https://punkytigerlabs.com/s1/
+1. Get a free key (20 M input tokens per day): https://punkytigerlabs.com/s1/
 2. Call the API:
 
 ### curl
@@ -92,7 +92,7 @@ console.log(d.answers.refund.p, d.answers.sentiment.best, d.answers.urgency.best
 (score levels are indexed in the order you list them, lowest first). Billed input tokens = the state once
 + every question; output is always 0 and free.
 
-**Pricing.** Free: 100 M input tokens/day per key, permanent · Prepaid: 0.042 USD per million input
+**Pricing.** Free: 20 M input tokens/day per key, permanent · Prepaid: 0.042 USD per million input
 tokens, output free · Contract: dedicated key.
 Docs: https://punkytigerlabs.com/s1/docs · Built on Gemma 4 26B-A4B, INT4 experts.
 

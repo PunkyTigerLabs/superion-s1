@@ -1,4 +1,4 @@
-"""Write superion-s1.marketplace.yaml: the spec for resellers (RapidAPI, AWS…).
+"""Write superion-s1.marketplace.yaml: the spec for resellers and marketplaces (AWS…).
 
 Resellers call the API with ONE contract key shared by all their subscribers, so key management and
 account endpoints must not be exposed: a subscriber could rotate or revoke the contract key, or read its usage.
