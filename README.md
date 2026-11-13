@@ -7,6 +7,7 @@ one calibrated probability per question, without generating text, in well under 
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)
 
 [Website](https://punkytigerlabs.com/s1/) · [Docs](https://punkytigerlabs.com/s1/docs) ·
+[Use cases](https://punkytigerlabs.com/s1/use-cases) ·
 [Model card](https://huggingface.co/PunkyTiger/Superion-S1) ·
 [Live demo](https://huggingface.co/spaces/ZamnaMx/superion-s1-demo) ·
 [Status](https://punkytigerlabs.com/s1/status)
