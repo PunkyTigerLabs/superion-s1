@@ -1,0 +1,39 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.PunkyTigerLabs/superion-s1",
+  "title": "Superion S1",
+  "description": "Calibrated yes/no, choice and score decisions for agents. Probabilities, not text, sub-second.",
+  "websiteUrl": "https://punkytigerlabs.com/s1/",
+  "repository": {
+    "url": "https://github.com/PunkyTigerLabs/superion-s1",
+    "source": "github",
+    "subfolder": "mcp"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@punkytigerlabs/superion-s1-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "SUPERION_API_KEY",
+          "description": "Superion S1 API key (s1k_...). Free key, 20 M input tokens/day: https://punkytigerlabs.com/s1/",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "SUPERION_MODEL",
+          "description": "Optional pinned model version, e.g. superion-s1-v6-int4e-vllm-kv1@sha256:e6dc49dc. Default: superion-s1-latest.",
+          "isRequired": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

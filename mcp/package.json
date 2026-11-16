@@ -1,0 +1,64 @@
+{
+  "name": "@punkytigerlabs/superion-s1-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for Superion S1: calibrated yes/no, choice and score decisions as tools for AI agents (Punky Tiger Labs).",
+  "license": "MIT",
+  "author": "Punky Tiger Labs <alvaro.lopez@punkytigerlabs.com>",
+  "homepage": "https://punkytigerlabs.com/s1/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PunkyTigerLabs/superion-s1.git",
+    "directory": "mcp"
+  },
+  "bugs": "https://github.com/PunkyTigerLabs/superion-s1/issues",
+  "mcpName": "io.github.PunkyTigerLabs/superion-s1",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "superion",
+    "classification",
+    "calibrated",
+    "decision",
+    "guardrail",
+    "agents"
+  ],
+  "type": "module",
+  "main": "./dist/server.js",
+  "types": "./dist/server.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/server.d.ts",
+      "default": "./dist/server.js"
+    }
+  },
+  "bin": {
+    "superion-s1-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test test/server.test.mjs test/stdio.test.mjs",
+    "test:live": "npm run build && S1_LIVE=1 node --test test/live.test.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^3.25.0 || ^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3"
+  }
+}

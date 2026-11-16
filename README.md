@@ -67,6 +67,7 @@ const p = await new Superion().noul("Message: I want my money back.", "Does the 
 |---|---|---|
 | [`python/`](python) | `superion-s1` | Python SDK: sync + async, typed answers, retries, `noul()`, `choice()`, `score()`, `decide()` |
 | [`js/`](js) | `@punkytigerlabs/superion-s1` | JavaScript / TypeScript SDK: `fetch`, ESM + CJS, no dependencies |
+| [`mcp/`](mcp) | `@punkytigerlabs/superion-s1-mcp` | MCP server (stdio) for Claude, Cursor, VS Code and any MCP client: `decide_yes_no`, `classify`, `score`, `decide` |
 | [`integrations/langchain/`](integrations/langchain) | `langchain-superion` | LangChain tool, guardrail and router |
 | [`integrations/llamaindex/`](integrations/llamaindex) | `llama-index-tools-superion` | LlamaIndex tool spec |
 | [`openapi/`](openapi) | | OpenAPI 3.1 spec (full, and a marketplace variant) |
