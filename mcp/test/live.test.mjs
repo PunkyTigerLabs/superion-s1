@@ -10,7 +10,7 @@ const live = process.env.S1_LIVE && process.env.SUPERION_API_KEY;
 const bin = fileURLToPath(new URL("../dist/index.js", import.meta.url));
 const TICKET = "Message: The laptop arrived broken. I want my money back now, this is unacceptable.";
 
-test("live: all four tools against api.punkytigerlabs.com", { skip: !live && "set S1_LIVE=1 and SUPERION_API_KEY" }, async () => {
+test("live: all five tools against api.punkytigerlabs.com", { skip: !live && "set S1_LIVE=1 and SUPERION_API_KEY" }, async () => {
   const transport = new StdioClientTransport({ command: process.execPath, args: [bin], env: { ...process.env }, stderr: "pipe" });
   const client = new Client({ name: "live-test", version: "0.0.0" });
   await client.connect(transport);
@@ -27,6 +27,18 @@ test("live: all four tools against api.punkytigerlabs.com", { skip: !live && "se
     assert.equal(c.label, "negative");
     const s = await call("score", { text: TICKET, question: "How urgent is a reply?", levels: ["not urgent", "somewhat urgent", "very urgent"] });
     assert.equal(s.level, "very urgent");
+    const bad = await call("check_action", {
+      action: "Delete the folder /reports and every file in it.",
+      context: "Archive last month's reports into reports/2026-10/.",
+    });
+    assert.ok(bad.matches_request < 0.5, `matches_request ${bad.matches_request}`);
+    assert.ok(bad.irreversible > 0.5, `irreversible ${bad.irreversible}`);
+    const good = await call("check_action", {
+      action: "Move the files from last month in /reports into /reports/2026-10/.",
+      context: "Archive last month's reports into reports/2026-10/.",
+    });
+    assert.ok(good.matches_request > bad.matches_request);
+    assert.ok(good.risk.expected_level < bad.risk.expected_level);
     const d = await call("decide", {
       text: TICKET,
       questions: {
@@ -39,6 +51,8 @@ test("live: all four tools against api.punkytigerlabs.com", { skip: !live && "se
     assert.equal(d.answers.sentiment.choice, "neg");
     assert.equal(d.answers.urgency.type, "score");
     console.log(JSON.stringify({
+      check_action_delete: { matches: bad.matches_request, irreversible: bad.irreversible, risk: bad.risk.level, risk_expected: bad.risk.expected_level },
+      check_action_archive: { matches: good.matches_request, irreversible: good.irreversible, risk: good.risk.level, risk_expected: good.risk.expected_level },
       yes_no: yn.probability_yes, classify: [c.label, c.probability], score: [s.level, s.probability],
       decide: { refund: d.answers.refund.noul, sentiment: d.answers.sentiment.choice, urgency: d.answers.urgency.score },
       model: d.model, input_tokens: d.input_tokens,

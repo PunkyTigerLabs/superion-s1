@@ -17,7 +17,7 @@ test("stdio: initialize, list tools and call one without a key", async () => {
     assert.equal(client.getServerVersion().name, "superion-s1");
     assert.match(client.getInstructions() ?? "", /calibrated/);
     const { tools } = await client.listTools();
-    assert.deepEqual(tools.map((t) => t.name).sort(), ["classify", "decide", "decide_yes_no", "score"]);
+    assert.deepEqual(tools.map((t) => t.name).sort(), ["check_action", "classify", "decide", "decide_yes_no", "score"]);
     const r = await client.callTool({ name: "decide_yes_no", arguments: { text: "hello", question: "Is this a greeting?" } });
     assert.equal(r.isError, true);
     assert.match(r.content[0].text, /SUPERION_API_KEY is not set/);

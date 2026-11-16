@@ -29,13 +29,13 @@ async function connect(opts) {
 const meta = { request_id: "req_test", mode: "live", latency_ms: 120 };
 const usage = { input_tokens: 42, output_tokens: 0 };
 
-test("lists the four tools with input schemas and read-only annotations", async () => {
+test("lists the five tools with input schemas and read-only annotations", async () => {
   const client = await connect(stub(200, {}));
   const { tools } = await client.listTools();
-  assert.deepEqual(tools.map((t) => t.name).sort(), ["classify", "decide", "decide_yes_no", "score"]);
+  assert.deepEqual(tools.map((t) => t.name).sort(), ["check_action", "classify", "decide", "decide_yes_no", "score"]);
   for (const t of tools) {
     assert.equal(t.inputSchema.type, "object");
-    assert.ok(t.inputSchema.required.includes("text"));
+    assert.ok(t.inputSchema.required.includes(t.name === "check_action" ? "action" : "text"));
     assert.equal(t.annotations.readOnlyHint, true);
     assert.ok(t.description.length > 40);
   }
@@ -132,6 +132,54 @@ test("decide rejects an invalid question type at the schema level", async () => 
   const r = await client.callTool({ name: "decide", arguments: { text: "t", questions: { a: { type: "bogus", instructions: "x", criteria: {} } } } });
   assert.equal(r.isError, true);
   assert.equal(s.calls.length, 0);
+});
+
+test("check_action asks matches_request, irreversible and risk in ONE call", async () => {
+  const s = stub(200, {
+    model: "m", usage, meta,
+    answers: {
+      matches_request: { type: "noul", noul: 0.0062 },
+      irreversible: { type: "noul", noul: 0.97 },
+      risk: { type: "score", score: 2.7, confidence: 0.5, probabilities: { "0": 0.01, "1": 0.04, "2": 0.19, "3": 0.76 } },
+    },
+  });
+  const client = await connect(s);
+  const r = await client.callTool({
+    name: "check_action",
+    arguments: { action: "Delete the folder /reports", context: "Archive last month's reports" },
+  });
+  assert.ok(!r.isError);
+  assert.equal(s.calls.length, 1);
+  const body = s.calls[0].body;
+  assert.match(body.state, /User request:\nArchive last month's reports/);
+  assert.match(body.state, /Planned action:\nDelete the folder \/reports/);
+  assert.deepEqual(Object.keys(body.questions), ["matches_request", "irreversible", "risk"]);
+  assert.equal(body.questions.matches_request.type, "noul");
+  assert.equal(body.questions.irreversible.type, "noul");
+  assert.deepEqual(body.questions.risk.criteria, ["no risk", "low risk", "moderate risk", "high risk"]);
+  const out = r.structuredContent;
+  assert.equal(out.matches_request, 0.0062);
+  assert.equal(out.irreversible, 0.97);
+  assert.equal(out.risk.level, "high risk");
+  assert.equal(out.risk.probability, 0.76);
+  assert.equal(out.risk.normalized_score, 0.9);
+  assert.equal(out.risk.probabilities["low risk"], 0.04);
+  assert.equal(out.verdict, undefined); // probabilities only: the agent picks its thresholds
+});
+
+test("check_action requires both action and context", async () => {
+  const s = stub(200, {});
+  const client = await connect(s);
+  const r = await client.callTool({ name: "check_action", arguments: { action: "rm -rf /tmp/x" } });
+  assert.equal(r.isError, true);
+  assert.equal(s.calls.length, 0);
+});
+
+test("check_action surfaces API errors (402) clearly", async () => {
+  const client = await connect(stub(402, { error: "insufficient credits", balance_usd: 0 }));
+  const r = await client.callTool({ name: "check_action", arguments: { action: "a", context: "c" } });
+  assert.equal(r.isError, true);
+  assert.match(r.content[0].text, /insufficient prepaid credit \(402\)/);
 });
 
 const errorCases = [

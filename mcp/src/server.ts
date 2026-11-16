@@ -1,6 +1,6 @@
 /**
  * Superion S1 MCP server: calibrated decisions as tools for AI agents.
- * Tools: decide_yes_no, classify, score, decide.
+ * Tools: decide_yes_no, classify, score, check_action, decide.
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
@@ -20,6 +20,9 @@ const text = z.string().min(1).describe(
 );
 
 const round = (x: number) => Math.round(x * 1e6) / 1e6;
+
+/** Risk scale used by check_action, lowest first. */
+export const RISK_LEVELS = ["no risk", "low risk", "moderate risk", "high risk"];
 
 /** 1 − H(p)/ln(n): 1 when one option holds all the probability, 0 when all are equal. */
 function confidence(ps: number[]): number {
@@ -63,7 +66,7 @@ export function createServer(opts: ServerOptions = {}): McpServer {
     {
       instructions:
         "Superion S1 returns calibrated probabilities (not text) for yes/no, choice and score questions about a text, in well under a second. " +
-        "Use it as a decision gate before irreversible or external actions (sending, deleting, paying, publishing), and to triage, moderate, route or score text. " +
+        "Use check_action as a gate before irreversible or external actions (sending, deleting, paying, publishing), and the other tools to triage, moderate, route or score text. " +
         "Because the probabilities are calibrated, a threshold means what it says: e.g. act automatically above 0.8 and ask the user otherwise.",
     },
   );
@@ -169,6 +172,61 @@ export function createServer(opts: ServerOptions = {}): McpServer {
           normalized_score: round(levels.length > 1 ? expected / (levels.length - 1) : 0),
           confidence: round(a.confidence ?? confidence(ps)),
           probabilities: Object.fromEntries(levels.map((l, i) => [l, round(ps[i])])),
+          ...meta(r),
+        });
+      } catch (e) {
+        return fail(e);
+      }
+    },
+  );
+
+  server.registerTool(
+    "check_action",
+    {
+      title: "Check an action before doing it (calibrated guardrail)",
+      description:
+        "Call BEFORE any irreversible or external action (deleting, sending, paying, publishing, deploying, writing to production). " +
+        "In one call returns: the probability that the planned action does what the user asked (matches_request), " +
+        "the probability that it is irreversible, and its risk level on a 4-level scale. " +
+        "Returns probabilities, not a verdict: you choose the thresholds (e.g. proceed only if matches_request ≥ 0.8 and the action is not high risk; otherwise ask the user).",
+      inputSchema: {
+        action: z.string().min(1).describe("The action you are about to take, concretely (tool, target, parameters), e.g. 'Delete the folder /reports and all its files'."),
+        context: z.string().min(1).describe("What the user asked for, ideally in their own words, plus any relevant constraints."),
+      },
+      annotations: ANNOTATIONS,
+    },
+    async ({ action, context }) => {
+      try {
+        const state = `User request:\n${context}\n\nPlanned action:\n${action}`;
+        const r = await client.decide(state, {
+          matches_request: {
+            type: "noul",
+            instructions: "Does the planned action do what the user asked, without going beyond it?",
+            criteria: { true: "yes, it does what the user asked", false: "no, it does something different or more than asked" },
+          },
+          irreversible: {
+            type: "noul",
+            instructions: "Would the planned action be hard or impossible to undo once executed?",
+            criteria: { true: "irreversible", false: "can be undone" },
+          },
+          risk: { type: "score", instructions: "How risky is the planned action for the user?", criteria: RISK_LEVELS },
+        });
+        const m = answerOf<NoulAnswer>(r, "matches_request", "noul").noul;
+        const irr = answerOf<NoulAnswer>(r, "irreversible", "noul").noul;
+        const risk = answerOf<ScoreAnswer>(r, "risk", "score");
+        const ps = RISK_LEVELS.map((_, i) => risk.probabilities[String(i)] ?? 0);
+        const bestIdx = ps.indexOf(Math.max(...ps));
+        const expected = risk.score ?? ps.reduce((s, p, i) => s + i * p, 0);
+        return ok({
+          matches_request: round(m),
+          irreversible: round(irr),
+          risk: {
+            level: RISK_LEVELS[bestIdx],
+            probability: round(ps[bestIdx]),
+            expected_level: round(expected),
+            normalized_score: round(expected / (RISK_LEVELS.length - 1)),
+            probabilities: Object.fromEntries(RISK_LEVELS.map((l, i) => [l, round(ps[i])])),
+          },
           ...meta(r),
         });
       } catch (e) {

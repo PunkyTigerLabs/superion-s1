@@ -10,8 +10,10 @@ in well under a second.
 [leaderboard](https://huggingface.co/datasets/hotchpotch/s1mb-result)
 
 ```
-Agent plans: delete the folder /reports.   User asked: archive last month reports.
-decide_yes_no("Does the planned action do exactly what the user asked?")  ->  probability_yes 0.006
+User asked:   Archive last month's reports into reports/2026-10/.
+Agent plans:  Delete the folder /reports and every file in it.
+
+check_action  ->  matches_request 0.018 · irreversible 0.806 · risk "high risk"
 ```
 
 Because the probabilities are calibrated, a threshold means what it says: act automatically above 0.8,
@@ -25,6 +27,7 @@ Free key, **20 M input tokens per day, permanent**: https://punkytigerlabs.com/s
 
 | tool | what it does | returns |
 |---|---|---|
+| `check_action` | Guardrail before acting: does the planned action match what the user asked, is it irreversible, how risky is it. Three checks, one call. | `matches_request`, `irreversible`, `risk` |
 | `decide_yes_no` | Probability that the answer to a yes/no question about a text is yes. Use it as a gate before irreversible or external actions. | `probability_yes`, `answer` |
 | `classify` | Pick one of 2–255 labels (sentiment, intent, topic, routing, moderation). Optional per-label descriptions. | `label`, `probability`, `confidence`, `probabilities` |
 | `score` | Rate a text on an ordered scale of 2–16 levels, lowest first (urgency, risk, lead quality). | `level`, `expected_level`, `normalized_score`, `confidence`, `probabilities` |
@@ -32,6 +35,42 @@ Free key, **20 M input tokens per day, permanent**: https://punkytigerlabs.com/s
 
 Every result also carries `model`, `input_tokens` and `request_id`. All tools are read-only.
 Output tokens are always 0 and free.
+
+## Guardrail for agents: `check_action`
+
+Call `check_action` before anything that deletes, sends, pays, publishes or deploys. It takes two
+strings:
+
+- `action`: what the agent is about to do, concretely (tool, target, parameters);
+- `context`: what the user asked for, ideally in their own words.
+
+and asks three questions about them in **one** API call:
+
+| field | type | meaning |
+|---|---|---|
+| `matches_request` | probability | the action does what the user asked, without going beyond it |
+| `irreversible` | probability | the action would be hard or impossible to undo |
+| `risk` | 4-level scale | `no risk` · `low risk` · `moderate risk` · `high risk`, with `level`, `expected_level`, `normalized_score` (0–1) and a probability per level |
+
+Real results (Superion S1 v6, 16 Nov 2026):
+
+| user asked | agent plans | matches_request | irreversible | risk |
+|---|---|---|---|---|
+| Archive last month's reports into reports/2026-10/. | Delete the folder /reports and every file in it. | 0.018 | 0.806 | high risk |
+| Archive last month's reports into reports/2026-10/. | Move the files from last month in /reports into /reports/2026-10/. | 0.955 | 0.012 | low risk |
+
+The tool returns probabilities, not a verdict: you set the policy. A sensible default, checked in
+order (first match wins):
+
+```text
+1. stop and explain   if matches_request < 0.5
+2. ask the user       if irreversible >= 0.5, or risk.level is "moderate risk" or "high risk"
+3. proceed            if matches_request >= 0.8
+4. ask the user       otherwise
+```
+
+To make the agent use it, add a line like this to its instructions:
+*"Before any action that deletes, sends, pays, publishes or deploys, call `check_action` and follow the policy above."*
 
 ## Configuration
 
@@ -54,7 +93,7 @@ Settings → Developer → Edit Config (`claude_desktop_config.json`):
 }
 ```
 
-Restart Claude Desktop. The four tools appear under the tools menu.
+Restart Claude Desktop. The five tools appear under the tools menu.
 
 ### Claude Code
 
@@ -164,7 +203,7 @@ with your key and returns the answer. Nothing is stored locally. See https://pun
 ```bash
 npm install
 npm test                                  # build + mock tests + stdio end-to-end
-S1_LIVE=1 SUPERION_API_KEY=... npm run test:live   # real API, four tools over stdio
+S1_LIVE=1 SUPERION_API_KEY=... npm run test:live   # real API, five tools over stdio
 npx @modelcontextprotocol/inspector node dist/index.js
 ```
 
